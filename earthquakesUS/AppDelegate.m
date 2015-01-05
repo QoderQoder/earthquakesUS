@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  earthquakesUS
 //
-//  Created by Agnt86 on 1/5/15.
+//  Created by Spencer on 1/5/15.
 //  Copyright (c) 2015 spencer. All rights reserved.
 //
 

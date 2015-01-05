@@ -14,6 +14,11 @@
 		775899BA1A5A683400F4C655 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 775899B91A5A683400F4C655 /* Images.xcassets */; };
 		775899BD1A5A683400F4C655 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 775899BB1A5A683400F4C655 /* LaunchScreen.xib */; };
 		775899C91A5A683400F4C655 /* earthquakesUSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899C81A5A683400F4C655 /* earthquakesUSTests.m */; };
+		775899D61A5A69B900F4C655 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899D31A5A69B900F4C655 /* Reachability.m */; };
+		775899D71A5A69B900F4C655 /* Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899D51A5A69B900F4C655 /* Summary.m */; };
+		775899DD1A5A711000F4C655 /* Details.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DC1A5A711000F4C655 /* Details.m */; };
+		775899E01A5A917900F4C655 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DF1A5A917900F4C655 /* DetailViewController.m */; };
+		775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E11A5AA5D000F4C655 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +45,15 @@
 		775899C21A5A683400F4C655 /* earthquakesUSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = earthquakesUSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		775899C71A5A683400F4C655 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		775899C81A5A683400F4C655 /* earthquakesUSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = earthquakesUSTests.m; sourceTree = "<group>"; };
+		775899D21A5A69B900F4C655 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		775899D31A5A69B900F4C655 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		775899D41A5A69B900F4C655 /* Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summary.h; sourceTree = "<group>"; };
+		775899D51A5A69B900F4C655 /* Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summary.m; sourceTree = "<group>"; };
+		775899DB1A5A711000F4C655 /* Details.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Details.h; sourceTree = "<group>"; };
+		775899DC1A5A711000F4C655 /* Details.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Details.m; sourceTree = "<group>"; };
+		775899DE1A5A917900F4C655 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		775899DF1A5A917900F4C655 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		775899E11A5AA5D000F4C655 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +78,7 @@
 		775899A01A5A683300F4C655 = {
 			isa = PBXGroup;
 			children = (
+				775899E11A5AA5D000F4C655 /* MapKit.framework */,
 				775899AB1A5A683300F4C655 /* earthquakesUS */,
 				775899C51A5A683400F4C655 /* earthquakesUSTests */,
 				775899AA1A5A683300F4C655 /* Products */,
@@ -81,13 +97,9 @@
 		775899AB1A5A683300F4C655 /* earthquakesUS */ = {
 			isa = PBXGroup;
 			children = (
-				775899B01A5A683400F4C655 /* AppDelegate.h */,
-				775899B11A5A683400F4C655 /* AppDelegate.m */,
-				775899B31A5A683400F4C655 /* ViewController.h */,
-				775899B41A5A683400F4C655 /* ViewController.m */,
-				775899B61A5A683400F4C655 /* Main.storyboard */,
-				775899B91A5A683400F4C655 /* Images.xcassets */,
-				775899BB1A5A683400F4C655 /* LaunchScreen.xib */,
+				775899D91A5A70C500F4C655 /* Model */,
+				775899DA1A5A70D200F4C655 /* Controller */,
+				775899D81A5A70AC00F4C655 /* View */,
 				775899AC1A5A683400F4C655 /* Supporting Files */,
 			);
 			path = earthquakesUS;
@@ -117,6 +129,42 @@
 				775899C71A5A683400F4C655 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		775899D81A5A70AC00F4C655 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				775899B61A5A683400F4C655 /* Main.storyboard */,
+				775899B91A5A683400F4C655 /* Images.xcassets */,
+				775899BB1A5A683400F4C655 /* LaunchScreen.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		775899D91A5A70C500F4C655 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				775899DB1A5A711000F4C655 /* Details.h */,
+				775899DC1A5A711000F4C655 /* Details.m */,
+				775899D41A5A69B900F4C655 /* Summary.h */,
+				775899D51A5A69B900F4C655 /* Summary.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		775899DA1A5A70D200F4C655 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				775899DE1A5A917900F4C655 /* DetailViewController.h */,
+				775899DF1A5A917900F4C655 /* DetailViewController.m */,
+				775899D21A5A69B900F4C655 /* Reachability.h */,
+				775899D31A5A69B900F4C655 /* Reachability.m */,
+				775899B01A5A683400F4C655 /* AppDelegate.h */,
+				775899B11A5A683400F4C655 /* AppDelegate.m */,
+				775899B31A5A683400F4C655 /* ViewController.h */,
+				775899B41A5A683400F4C655 /* ViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,8 +268,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				775899B51A5A683400F4C655 /* ViewController.m in Sources */,
+				775899D71A5A69B900F4C655 /* Summary.m in Sources */,
+				775899DD1A5A711000F4C655 /* Details.m in Sources */,
 				775899B21A5A683400F4C655 /* AppDelegate.m in Sources */,
+				775899D61A5A69B900F4C655 /* Reachability.m in Sources */,
 				775899AF1A5A683400F4C655 /* main.m in Sources */,
+				775899E01A5A917900F4C655 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +464,7 @@
 				775899CE1A5A683400F4C655 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		775899CF1A5A683400F4C655 /* Build configuration list for PBXNativeTarget "earthquakesUSTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +473,7 @@
 				775899D11A5A683400F4C655 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
