@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <MapKit/MKAnnotation.h>
+
 #import "Details.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 

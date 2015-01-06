@@ -11,23 +11,30 @@
 #import "Summary.h"
 #import "DetailViewController.h"
 
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
+
 @interface ViewController ()<NSURLSessionDataDelegate>
 {
   UIRefreshControl *refreshControl;
-  Details *details;
   NSString *title;
+  int counter;
 }
-@property (strong, nonatomic) IBOutlet UINavigationItem *earthquakeTitle;
 
+
+
+@property (strong, nonatomic) IBOutlet UINavigationItem *earthquakeTitle;
+@property (strong, nonatomic) Details *details;
+@property (strong, nonatomic) id jsonDetails;
 
 @end
 
 @implementation ViewController
-@synthesize earthquakes;
+@synthesize earthquakes,details;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   [super viewDidLoad];
-  // Do any additional setup after loading the view, typically from a nib.
   [self initModel];
 }
 
@@ -62,9 +69,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self performSegueWithIdentifier:@"ShowDetailID" sender:self];
+  counter++;
+
+  Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
+  NSLog(@"summaryItem.detailURL is %@",summaryItem.detailURL);
   
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [self getEarthquakeData:summaryItem.detailURL];
   
   
 }
@@ -74,8 +84,13 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   if ([[segue identifier] isEqualToString:@"ShowDetailID"]) {
     
-    //  DetailViewController *dvc = (DetailViewController *) segue.destinationViewController;
+    NSLog(@"In prepareForSegue Alpha");
     
+     DetailViewController *dvc = (DetailViewController *) segue.destinationViewController;
+    dvc.details = details;
+      NSLog(@"In prepareForSegue: details: %f %f %f", details.latitude, details.longitude, details.longitude);
+    NSLog(@"In prepareForSegue: dvc.details: %f %f %f", dvc.details.latitude, dvc.details.longitude, dvc.details.longitude);
+
     //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
 //    NSDate *object = self.objects[indexPath.row];
@@ -93,16 +108,26 @@
 
 - (void)initModel
 {
+  CLLocationManager *locationManager = [[CLLocationManager alloc]init];
+  locationManager.delegate = self;
+  // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+  if(IS_OS_8_OR_LATER) {
+    // Use one or the other, not both. Depending on what you put in info.plist
+    
+    [locationManager requestAlwaysAuthorization];
+  }
+  
+  details = [Details new];
   earthquakes = [NSMutableArray new];
-  [self getEarthquakeData];
+  [self getEarthquakeData:downloadString];
   [self setupRefresh];
   
 }
 
-- (void)getEarthquakeData
+- (void)getEarthquakeData:(NSString*)urlString
 {
-  NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
-  NSURL *URL = [[NSURL alloc]initWithString:downloadString];
+
+  NSURL *URL = [[NSURL alloc]initWithString:urlString];
   NSURLRequest *requestGEO = [NSURLRequest requestWithURL:URL];
   
   NSURLSessionConfiguration *defaultConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -115,8 +140,15 @@
     if(error == nil)
     {
       id JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-      [self parseSummaryJSON:JSON];
-      NSLog(@"%@", JSON);
+      if ([urlString isEqualToString:downloadString]){
+        [self parseSummaryJSON:JSON];
+      }
+      else
+      {
+        NSLog(@"Else parseDetails");
+        [self parseDetails:JSON];
+        [self performSegueWithIdentifier:@"ShowDetailID" sender:self];
+      }
     }
     else
     {
@@ -148,7 +180,7 @@
 {
   NSLog(@"Refreshing");
   
-  [self getEarthquakeData];
+  [self getEarthquakeData:downloadString];
   
   //End Refreshing
   [(UIRefreshControl *)sender endRefreshing];
@@ -178,10 +210,11 @@
     summaryItem.detailURL = [properties objectForKey:@"detail"];
     NSDictionary *geometry = [item objectForKey:@"geometry"];
     NSArray *coordinates = [[NSArray alloc]initWithArray:[geometry objectForKey:@"coordinates"]];
-    summaryItem.latitude = [[coordinates objectAtIndex:0] floatValue];
-    summaryItem.longitude  = [[coordinates objectAtIndex:1] floatValue];
+    summaryItem.longitude = [[coordinates objectAtIndex:0] floatValue];
+    summaryItem.latitude  = [[coordinates objectAtIndex:1] floatValue];
     summaryItem.depth = [[coordinates objectAtIndex:2]floatValue];
     [earthquakes addObject:summaryItem];
+    NSLog(@"summary: lat %f long %f", summaryItem.latitude, summaryItem.longitude);
     
   }
   
@@ -189,6 +222,25 @@
   [self.tableView reloadData];
   
 }
+
+- (void)parseDetails:(id)json{
+  // details = [Details new];
+  NSLog(@"parseDetails' json is %@",json);
+  NSMutableDictionary *detailsJSON = (NSMutableDictionary*)json;
+  details.magnitude = [[[detailsJSON objectForKey:@"properties"]objectForKey:@"mag"] floatValue];
+  details.timeInterval = [[[detailsJSON objectForKey:@"properties"]objectForKey:@"time"] floatValue];
+  details.place = [[detailsJSON objectForKey:@"properties"]objectForKey:@"place"];
+  NSArray *coordinates = [[NSArray alloc]initWithArray:[[detailsJSON objectForKey:@"geometry"]objectForKey:@"coordinates"]];
+  
+  NSLog(@"coordinates is %@", coordinates);
+  details.longitude = [[coordinates objectAtIndex:0]floatValue];
+  details.latitude = [[coordinates objectAtIndex:1]floatValue];
+  details.depth = [[coordinates objectAtIndex:2]floatValue];
+  NSLog(@"coordinates details: %f %f %f", details.latitude, details.longitude, details.depth);
+  
+
+}
+
 
 +(BOOL)networkStatusAvailable{
   

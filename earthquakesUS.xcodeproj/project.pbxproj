@@ -19,6 +19,7 @@
 		775899DD1A5A711000F4C655 /* Details.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DC1A5A711000F4C655 /* Details.m */; };
 		775899E01A5A917900F4C655 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DF1A5A917900F4C655 /* DetailViewController.m */; };
 		775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E11A5AA5D000F4C655 /* MapKit.framework */; };
+		775899E41A5C606D00F4C655 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E31A5C606D00F4C655 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		775899DE1A5A917900F4C655 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		775899DF1A5A917900F4C655 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		775899E11A5AA5D000F4C655 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		775899E31A5C606D00F4C655 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				775899E41A5C606D00F4C655 /* CoreLocation.framework in Frameworks */,
 				775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +81,7 @@
 		775899A01A5A683300F4C655 = {
 			isa = PBXGroup;
 			children = (
+				775899E31A5C606D00F4C655 /* CoreLocation.framework */,
 				775899E11A5AA5D000F4C655 /* MapKit.framework */,
 				775899AB1A5A683300F4C655 /* earthquakesUS */,
 				775899C51A5A683400F4C655 /* earthquakesUSTests */,
