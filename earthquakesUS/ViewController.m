@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "Summary.h"
 #import "DetailViewController.h"
+#import "EarthQuakeTableViewCell.h"
 
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
@@ -36,8 +37,13 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 {
   [super viewDidLoad];
   [self initModel];
+  [self initUI];
+  
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+  self.tableView.userInteractionEnabled = YES;
+}
 
 #pragma mark - Table View Delegate Methods
 
@@ -53,24 +59,35 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   NSLog(@"Inside cellForRowAtIndexPath");
   
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
-  }
-
-//  NSDate *object = self.objects[indexPath.row];
-  Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
+  EarthQuakeTableViewCell *cell = (EarthQuakeTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
   
- cell.textLabel.text = summaryItem.place;
+  if (cell == nil)
+  {
+    
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EarthQuakeTableViewCell" owner:self options:nil];
+    
+    cell = [nib objectAtIndex:0];
+    
+  }
+  
+  //  NSDate *object = self.objects[indexPath.row];
+  Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
+  cell.backgroundColor = [self getCellColor:summaryItem.magnitude];
+  cell.placeLabel.text = summaryItem.place;
+  cell.magnitudeLabel.text = [NSString stringWithFormat:@"%f", summaryItem.magnitude];
+  
   NSLog(@"Cell's summaryItem.place is %@", summaryItem.place);
+  
+  [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+  
   return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   counter++;
-
+  tableView.userInteractionEnabled = NO;
+  
   Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
   NSLog(@"summaryItem.detailURL is %@",summaryItem.detailURL);
   
@@ -79,6 +96,15 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return 99;
+}
+
+
+
+
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -86,15 +112,15 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
     
     NSLog(@"In prepareForSegue Alpha");
     
-     DetailViewController *dvc = (DetailViewController *) segue.destinationViewController;
+    DetailViewController *dvc = (DetailViewController *) segue.destinationViewController;
     dvc.details = details;
-      NSLog(@"In prepareForSegue: details: %f %f %f", details.latitude, details.longitude, details.longitude);
+    NSLog(@"In prepareForSegue: details: %f %f %f", details.latitude, details.longitude, details.longitude);
     NSLog(@"In prepareForSegue: dvc.details: %f %f %f", dvc.details.latitude, dvc.details.longitude, dvc.details.longitude);
-
+    
     //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
-//    NSDate *object = self.objects[indexPath.row];
-//    [[segue destinationViewController] setDetailItem:object];
+    //    NSDate *object = self.objects[indexPath.row];
+    //    [[segue destinationViewController] setDetailItem:object];
   }
 }
 
@@ -103,7 +129,10 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 
 - (void)initUI
 {
-  
+  _tableView.contentInset = UIEdgeInsetsZero;
+  self.automaticallyAdjustsScrollViewInsets = NO;
+  _tableView.backgroundColor = [UIColor grayColor];
+  _earthquakeTitle.title = @"USGS Earthquake Data";
 }
 
 - (void)initModel
@@ -111,9 +140,9 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   CLLocationManager *locationManager = [[CLLocationManager alloc]init];
   locationManager.delegate = self;
   // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-  if(IS_OS_8_OR_LATER) {
+  if(IS_OS_8_OR_LATER)
+  {
     // Use one or the other, not both. Depending on what you put in info.plist
-    
     [locationManager requestAlwaysAuthorization];
   }
   
@@ -126,7 +155,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 
 - (void)getEarthquakeData:(NSString*)urlString
 {
-
+  
   NSURL *URL = [[NSURL alloc]initWithString:urlString];
   NSURLRequest *requestGEO = [NSURLRequest requestWithURL:URL];
   
@@ -147,13 +176,17 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
       {
         NSLog(@"Else parseDetails");
         [self parseDetails:JSON];
-        [self performSegueWithIdentifier:@"ShowDetailID" sender:self];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [self performSegueWithIdentifier:@"ShowDetailID" sender:self];
+        });
+        
       }
     }
     else
     {
       
       NSLog(@"Error detected!");
+      NSLog(@"Response is: %@",response);
     }
   }];
   
@@ -200,13 +233,18 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   NSLog(@"jsonDictionary2 is %@", jsonDictionary2);
   
   title = [jsonDictionary2 objectForKey:@"title"];
+  
+  _earthquakeTitle.title = title;
+  
   NSArray* jsonArray = [[NSArray alloc]initWithArray:[jsonDictionary objectForKey:@"features"]];
   
-  for (id item in jsonArray) {
+  for (id item in jsonArray)
+  {
     Summary *summaryItem = [Summary new];
     
     NSDictionary *properties = [item objectForKey:@"properties"];
     summaryItem.place = [properties objectForKey:@"place"];
+    summaryItem.magnitude = [[properties objectForKey:@"mag"]floatValue];
     summaryItem.detailURL = [properties objectForKey:@"detail"];
     NSDictionary *geometry = [item objectForKey:@"geometry"];
     NSArray *coordinates = [[NSArray alloc]initWithArray:[geometry objectForKey:@"coordinates"]];
@@ -228,6 +266,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   NSLog(@"parseDetails' json is %@",json);
   NSMutableDictionary *detailsJSON = (NSMutableDictionary*)json;
   details.magnitude = [[[detailsJSON objectForKey:@"properties"]objectForKey:@"mag"] floatValue];
+  details.color = [self getCellColor:details.magnitude];
   details.timeInterval = [[[detailsJSON objectForKey:@"properties"]objectForKey:@"time"] floatValue];
   details.place = [[detailsJSON objectForKey:@"properties"]objectForKey:@"place"];
   NSArray *coordinates = [[NSArray alloc]initWithArray:[[detailsJSON objectForKey:@"geometry"]objectForKey:@"coordinates"]];
@@ -238,9 +277,57 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   details.depth = [[coordinates objectAtIndex:2]floatValue];
   NSLog(@"coordinates details: %f %f %f", details.latitude, details.longitude, details.depth);
   
-
+  
 }
 
+
+- (UIColor*)getCellColor:(float)magnitude
+{
+  UIColor *cellColor;
+  NSLog(@"magnitude is %f", magnitude);
+  
+  if (magnitude < 1) {
+    cellColor = [UIColor colorWithRed:188/255.0f green:255/255.0f blue:48/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 1 && magnitude < 2)
+  {
+    cellColor = [UIColor colorWithRed:216/255.0f green:251/255.0f blue:61/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 2 && magnitude < 3)
+  {
+    cellColor = [UIColor colorWithRed:231/255.0f green:255/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 3 && magnitude < 4)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:241/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 4 && magnitude < 5)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:212/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 5 && magnitude < 6)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:170/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 6 && magnitude < 7)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:111/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 7 && magnitude < 8)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:98/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 8 && magnitude < 9)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:81/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  else if (magnitude >= 9 && magnitude < 10)
+  {
+    cellColor = [UIColor colorWithRed:255/255.0f green:32/255.0f blue:0/255.0f alpha:1.0f];
+  }
+  
+  return cellColor;
+}
 
 +(BOOL)networkStatusAvailable{
   

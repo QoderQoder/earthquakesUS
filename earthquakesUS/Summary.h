@@ -14,5 +14,5 @@
 @property float latitude;
 @property float longitude;
 @property float depth;
-
+@property float magnitude;
 @end

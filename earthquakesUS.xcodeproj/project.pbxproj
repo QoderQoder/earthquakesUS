@@ -20,6 +20,9 @@
 		775899E01A5A917900F4C655 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DF1A5A917900F4C655 /* DetailViewController.m */; };
 		775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E11A5AA5D000F4C655 /* MapKit.framework */; };
 		775899E41A5C606D00F4C655 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E31A5C606D00F4C655 /* CoreLocation.framework */; };
+		77D648C01A5F1989007981F7 /* EarthQuakeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D648BE1A5F1989007981F7 /* EarthQuakeTableViewCell.m */; };
+		77D648C11A5F1989007981F7 /* EarthQuakeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77D648BF1A5F1989007981F7 /* EarthQuakeTableViewCell.xib */; };
+		77D648C41A632907007981F7 /* NavControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D648C31A632907007981F7 /* NavControllerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,11 @@
 		775899DF1A5A917900F4C655 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		775899E11A5AA5D000F4C655 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		775899E31A5C606D00F4C655 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		77D648BD1A5F1989007981F7 /* EarthQuakeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarthQuakeTableViewCell.h; sourceTree = "<group>"; };
+		77D648BE1A5F1989007981F7 /* EarthQuakeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EarthQuakeTableViewCell.m; sourceTree = "<group>"; };
+		77D648BF1A5F1989007981F7 /* EarthQuakeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarthQuakeTableViewCell.xib; sourceTree = "<group>"; };
+		77D648C21A632907007981F7 /* NavControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavControllerViewController.h; sourceTree = "<group>"; };
+		77D648C31A632907007981F7 /* NavControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavControllerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +149,7 @@
 				775899B61A5A683400F4C655 /* Main.storyboard */,
 				775899B91A5A683400F4C655 /* Images.xcassets */,
 				775899BB1A5A683400F4C655 /* LaunchScreen.xib */,
+				77D648BF1A5F1989007981F7 /* EarthQuakeTableViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -159,6 +168,8 @@
 		775899DA1A5A70D200F4C655 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				77D648BD1A5F1989007981F7 /* EarthQuakeTableViewCell.h */,
+				77D648BE1A5F1989007981F7 /* EarthQuakeTableViewCell.m */,
 				775899DE1A5A917900F4C655 /* DetailViewController.h */,
 				775899DF1A5A917900F4C655 /* DetailViewController.m */,
 				775899D21A5A69B900F4C655 /* Reachability.h */,
@@ -167,6 +178,8 @@
 				775899B11A5A683400F4C655 /* AppDelegate.m */,
 				775899B31A5A683400F4C655 /* ViewController.h */,
 				775899B41A5A683400F4C655 /* ViewController.m */,
+				77D648C21A632907007981F7 /* NavControllerViewController.h */,
+				77D648C31A632907007981F7 /* NavControllerViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -253,6 +266,7 @@
 			files = (
 				775899B81A5A683400F4C655 /* Main.storyboard in Resources */,
 				775899BD1A5A683400F4C655 /* LaunchScreen.xib in Resources */,
+				77D648C11A5F1989007981F7 /* EarthQuakeTableViewCell.xib in Resources */,
 				775899BA1A5A683400F4C655 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,8 +287,10 @@
 			files = (
 				775899B51A5A683400F4C655 /* ViewController.m in Sources */,
 				775899D71A5A69B900F4C655 /* Summary.m in Sources */,
+				77D648C01A5F1989007981F7 /* EarthQuakeTableViewCell.m in Sources */,
 				775899DD1A5A711000F4C655 /* Details.m in Sources */,
 				775899B21A5A683400F4C655 /* AppDelegate.m in Sources */,
+				77D648C41A632907007981F7 /* NavControllerViewController.m in Sources */,
 				775899D61A5A69B900F4C655 /* Reachability.m in Sources */,
 				775899AF1A5A683400F4C655 /* main.m in Sources */,
 				775899E01A5A917900F4C655 /* DetailViewController.m in Sources */,

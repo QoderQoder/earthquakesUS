@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableArray *earthquakes;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UINavigationItem *navBar;
 
 @end
 

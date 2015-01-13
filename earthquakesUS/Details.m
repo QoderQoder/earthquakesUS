@@ -9,6 +9,6 @@
 #import "Details.h"
 
 @implementation Details
-@synthesize place, longitude, latitude, depth, timeInterval, magnitude;
+@synthesize place, longitude, latitude, depth, timeInterval, magnitude, color;
 
 @end

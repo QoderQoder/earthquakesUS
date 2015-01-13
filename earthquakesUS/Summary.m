@@ -9,6 +9,6 @@
 #import "Summary.h"
 
 @implementation Summary
-@synthesize place, longitude, latitude, depth, detailURL;
+@synthesize place, longitude, latitude, depth,magnitude, detailURL;
 
 @end
