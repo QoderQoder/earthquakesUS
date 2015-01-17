@@ -15,11 +15,18 @@
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
 
-@interface ViewController ()<NSURLSessionDataDelegate>
+@interface ViewController ()<NSURLSessionDataDelegate, MKMapViewDelegate>
 {
   UIRefreshControl *refreshControl;
   NSString *title;
   int counter;
+  NSString *dataStore;
+  NSFileManager *manager;
+  NSUserDefaults *userDefaults;
+  NSArray *documentsPath;
+  NSString *path;
+  BOOL isOnline;
+  
 }
 
 
@@ -31,7 +38,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 @end
 
 @implementation ViewController
-@synthesize earthquakes,details;
+@synthesize earthquakes, details, activityIndicator, listMapSegmentControl, summaryMapView;
 
 - (void)viewDidLoad
 {
@@ -78,7 +85,10 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   
   NSLog(@"Cell's summaryItem.place is %@", summaryItem.place);
   
-  [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+  if (isOnline)
+  {
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+  }
   
   return cell;
 }
@@ -86,14 +96,19 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   counter++;
-  tableView.userInteractionEnabled = NO;
-  
-  Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
-  NSLog(@"summaryItem.detailURL is %@",summaryItem.detailURL);
-  
-  [self getEarthquakeData:summaryItem.detailURL];
-  
-  
+  if (isOnline){
+    tableView.userInteractionEnabled = NO;
+    
+    Summary *summaryItem = [earthquakes objectAtIndex:indexPath.row];
+    NSLog(@"summaryItem.detailURL is %@",summaryItem.detailURL);
+    
+    [self getEarthquakeData:summaryItem.detailURL];
+    
+  }
+  else{
+    //pop up alert informing detailed data is unavailable in offline mode.
+    
+  }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -133,6 +148,9 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   self.automaticallyAdjustsScrollViewInsets = NO;
   _tableView.backgroundColor = [UIColor grayColor];
   _earthquakeTitle.title = @"USGS Earthquake Data";
+  summaryMapView.mapType = MKMapTypeHybrid;
+  summaryMapView.hidden = YES;
+  
 }
 
 - (void)initModel
@@ -144,11 +162,17 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   {
     // Use one or the other, not both. Depending on what you put in info.plist
     [locationManager requestAlwaysAuthorization];
+    
   }
+  summaryMapView.delegate = self;
   
   details = [Details new];
   earthquakes = [NSMutableArray new];
-  [self getEarthquakeData:downloadString];
+  manager = [NSFileManager defaultManager];
+  
+  
+  
+  [self getData];
   [self setupRefresh];
   
 }
@@ -165,28 +189,63 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   
   NSURLSession *dataSession = [NSURLSession sessionWithConfiguration:defaultConfiguration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
   
+  [self.view addSubview:activityIndicator];
+  activityIndicator.hidden = NO;
+  [activityIndicator startAnimating];
+  
+  NSLog(@"In getEarthquakeData");
+  
   NSURLSessionDataTask *dataTask = [dataSession dataTaskWithRequest:requestGEO completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     if(error == nil)
     {
-      id JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-      if ([urlString isEqualToString:downloadString]){
+      NSDictionary* JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+      
+      
+      if ([urlString isEqualToString:downloadString])
+      {
+        if (JSON)
+        {
+          NSData *savedJSON = [NSKeyedArchiver archivedDataWithRootObject:JSON];
+          [[NSUserDefaults standardUserDefaults]setObject:savedJSON forKey:@"Earthquakes"];
+          [[NSUserDefaults standardUserDefaults]synchronize];
+          
+        }
+        
         [self parseSummaryJSON:JSON];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [activityIndicator stopAnimating];
+          activityIndicator.hidden =YES;
+          isOnline = YES;
+          
+        });
       }
       else
       {
         NSLog(@"Else parseDetails");
         [self parseDetails:JSON];
+        
+        //Hand off results to mainqueue for UI
         dispatch_async(dispatch_get_main_queue(), ^{
+          [activityIndicator stopAnimating];
+          activityIndicator.hidden =YES;
+          
+          
           [self performSegueWithIdentifier:@"ShowDetailID" sender:self];
+          
         });
         
       }
     }
     else
     {
+#warning need to add better error handling
+      [activityIndicator stopAnimating];
+      activityIndicator.hidden =YES;
       
       NSLog(@"Error detected!");
       NSLog(@"Response is: %@",response);
+      isOnline = NO;
+      
     }
   }];
   
@@ -227,7 +286,10 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 {
   NSLog(@"parseSummary: %@",json);
   
+  
   NSDictionary *jsonDictionary = (NSDictionary*)json;
+  
+  
   NSMutableDictionary *jsonDictionary2  = [jsonDictionary objectForKey:@"metadata"];
   
   NSLog(@"jsonDictionary2 is %@", jsonDictionary2);
@@ -253,6 +315,8 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
     summaryItem.depth = [[coordinates objectAtIndex:2]floatValue];
     [earthquakes addObject:summaryItem];
     NSLog(@"summary: lat %f long %f", summaryItem.latitude, summaryItem.longitude);
+    
+    [self createMapPinPoint:summaryItem];
     
   }
   
@@ -329,7 +393,8 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   return cellColor;
 }
 
-+(BOOL)networkStatusAvailable{
+-(BOOL)networkStatusAvailable
+{
   
   Reachability *internetReach =  [Reachability reachabilityForInternetConnection];
   [internetReach startNotifier];
@@ -351,4 +416,71 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
   
 }
 
+
+-(void)getData
+{
+  if ([self networkStatusAvailable]) {
+    NSLog(@"Hi. The Network is working");
+    
+    [self getEarthquakeData:downloadString];
+    
+  }
+  else{
+    NSLog(@"There is no network available");
+    
+    //verify if file exists. if it exists, then fill array; refresh data
+    NSData *retrievedSavedData = [[NSUserDefaults standardUserDefaults]objectForKey:@"Earthquakes"];
+    id JSON = [NSKeyedUnarchiver unarchiveObjectWithData:retrievedSavedData];
+    
+    [self parseSummaryJSON:JSON];
+    
+  }
+  
+}
+
+
+-(void)createMapPinPoint:(Summary*)summary
+{
+  
+  CLLocationCoordinate2D coordinate;
+  
+  coordinate.latitude = summary.latitude;
+  coordinate.longitude = summary.longitude;
+  
+  MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
+  point.coordinate = coordinate;
+  point.title = summary.place;
+  
+  
+  MKPinAnnotationView *annView=[[MKPinAnnotationView alloc] initWithAnnotation:point reuseIdentifier:@"currentloc"];
+  annView.pinColor = MKPinAnnotationColorGreen;
+  
+  [summaryMapView addAnnotation:point];
+  
+}
+
+
+#pragma mark - IBAction Methods
+- (IBAction)actionRefresh:(id)sender
+{
+  earthquakes = [NSMutableArray new];
+  [self getData];
+  self.tableView.userInteractionEnabled = YES;
+  
+}
+
+
+- (IBAction)actionSelectListMap:(id)sender {
+  
+  if (listMapSegmentControl.selectedSegmentIndex == 0)
+  {
+    summaryMapView.hidden = YES;
+  }
+  else if (listMapSegmentControl.selectedSegmentIndex == 1)
+  {
+    summaryMapView.hidden = NO;
+    
+    
+  }
+}
 @end

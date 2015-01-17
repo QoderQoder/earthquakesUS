@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import <MapKit/MKAnnotation.h>
+#import "AppDelegate.h"
+#import "ZSPinAnnotation.h"
 
 #import "Details.h"
 

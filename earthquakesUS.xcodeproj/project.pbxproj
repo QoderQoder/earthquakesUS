@@ -20,6 +20,11 @@
 		775899E01A5A917900F4C655 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775899DF1A5A917900F4C655 /* DetailViewController.m */; };
 		775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E11A5AA5D000F4C655 /* MapKit.framework */; };
 		775899E41A5C606D00F4C655 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775899E31A5C606D00F4C655 /* CoreLocation.framework */; };
+		77A323001A67238D00506BF6 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A322FF1A67238D00506BF6 /* CoreImage.framework */; };
+		77A323021A67239400506BF6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A323011A67239400506BF6 /* QuartzCore.framework */; };
+		77A323061A6723EF00506BF6 /* ZSPinAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A323051A6723EF00506BF6 /* ZSPinAnnotation.m */; };
+		77CC1CCD1A65F95200475A54 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CC1CCC1A65F95200475A54 /* CoreData.framework */; };
+		77CC1CD01A65FC5C00475A54 /* Earthquakes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 77CC1CCE1A65FC5C00475A54 /* Earthquakes.xcdatamodeld */; };
 		77D648C01A5F1989007981F7 /* EarthQuakeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D648BE1A5F1989007981F7 /* EarthQuakeTableViewCell.m */; };
 		77D648C11A5F1989007981F7 /* EarthQuakeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77D648BF1A5F1989007981F7 /* EarthQuakeTableViewCell.xib */; };
 		77D648C41A632907007981F7 /* NavControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D648C31A632907007981F7 /* NavControllerViewController.m */; };
@@ -59,6 +64,12 @@
 		775899DF1A5A917900F4C655 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		775899E11A5AA5D000F4C655 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		775899E31A5C606D00F4C655 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		77A322FF1A67238D00506BF6 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		77A323011A67239400506BF6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		77A323041A6723EF00506BF6 /* ZSPinAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZSPinAnnotation.h; sourceTree = "<group>"; };
+		77A323051A6723EF00506BF6 /* ZSPinAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZSPinAnnotation.m; sourceTree = "<group>"; };
+		77CC1CCC1A65F95200475A54 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		77CC1CCF1A65FC5C00475A54 /* Earthquakes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Earthquakes.xcdatamodel; sourceTree = "<group>"; };
 		77D648BD1A5F1989007981F7 /* EarthQuakeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarthQuakeTableViewCell.h; sourceTree = "<group>"; };
 		77D648BE1A5F1989007981F7 /* EarthQuakeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EarthQuakeTableViewCell.m; sourceTree = "<group>"; };
 		77D648BF1A5F1989007981F7 /* EarthQuakeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarthQuakeTableViewCell.xib; sourceTree = "<group>"; };
@@ -71,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77A323021A67239400506BF6 /* QuartzCore.framework in Frameworks */,
+				77A323001A67238D00506BF6 /* CoreImage.framework in Frameworks */,
+				77CC1CCD1A65F95200475A54 /* CoreData.framework in Frameworks */,
 				775899E41A5C606D00F4C655 /* CoreLocation.framework in Frameworks */,
 				775899E21A5AA5D000F4C655 /* MapKit.framework in Frameworks */,
 			);
@@ -89,6 +103,9 @@
 		775899A01A5A683300F4C655 = {
 			isa = PBXGroup;
 			children = (
+				77A323011A67239400506BF6 /* QuartzCore.framework */,
+				77A322FF1A67238D00506BF6 /* CoreImage.framework */,
+				77CC1CCC1A65F95200475A54 /* CoreData.framework */,
 				775899E31A5C606D00F4C655 /* CoreLocation.framework */,
 				775899E11A5AA5D000F4C655 /* MapKit.framework */,
 				775899AB1A5A683300F4C655 /* earthquakesUS */,
@@ -120,6 +137,7 @@
 		775899AC1A5A683400F4C655 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				77A323031A6723D500506BF6 /* ZSPAnnotation */,
 				775899AD1A5A683400F4C655 /* Info.plist */,
 				775899AE1A5A683400F4C655 /* main.m */,
 			);
@@ -157,6 +175,7 @@
 		775899D91A5A70C500F4C655 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				77CC1CCE1A65FC5C00475A54 /* Earthquakes.xcdatamodeld */,
 				775899DB1A5A711000F4C655 /* Details.h */,
 				775899DC1A5A711000F4C655 /* Details.m */,
 				775899D41A5A69B900F4C655 /* Summary.h */,
@@ -182,6 +201,15 @@
 				77D648C31A632907007981F7 /* NavControllerViewController.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		77A323031A6723D500506BF6 /* ZSPAnnotation */ = {
+			isa = PBXGroup;
+			children = (
+				77A323041A6723EF00506BF6 /* ZSPinAnnotation.h */,
+				77A323051A6723EF00506BF6 /* ZSPinAnnotation.m */,
+			);
+			name = ZSPAnnotation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,11 +313,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77CC1CD01A65FC5C00475A54 /* Earthquakes.xcdatamodeld in Sources */,
 				775899B51A5A683400F4C655 /* ViewController.m in Sources */,
 				775899D71A5A69B900F4C655 /* Summary.m in Sources */,
 				77D648C01A5F1989007981F7 /* EarthQuakeTableViewCell.m in Sources */,
 				775899DD1A5A711000F4C655 /* Details.m in Sources */,
 				775899B21A5A683400F4C655 /* AppDelegate.m in Sources */,
+				77A323061A6723EF00506BF6 /* ZSPinAnnotation.m in Sources */,
 				77D648C41A632907007981F7 /* NavControllerViewController.m in Sources */,
 				775899D61A5A69B900F4C655 /* Reachability.m in Sources */,
 				775899AF1A5A683400F4C655 /* main.m in Sources */,
@@ -496,6 +526,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		77CC1CCE1A65FC5C00475A54 /* Earthquakes.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				77CC1CCF1A65FC5C00475A54 /* Earthquakes.xcdatamodel */,
+			);
+			currentVersion = 77CC1CCF1A65FC5C00475A54 /* Earthquakes.xcdatamodel */;
+			name = Earthquakes.xcdatamodeld;
+			path = ../Earthquakes.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 775899A11A5A683300F4C655 /* Project object */;
 }

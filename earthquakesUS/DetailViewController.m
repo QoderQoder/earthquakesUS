@@ -46,6 +46,7 @@
   zoomLocation.latitude = details.latitude;
   zoomLocation.longitude = details.longitude;
   NSLog(@"zoomLocation: %f %f", details.latitude, details.longitude);
+  mapView.delegate = self;
   
   NSLog(@"latitude: %f longitude: %f", details.latitude, details.longitude);
   MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, .5 * METERS_PER_MILE, .5 * METERS_PER_MILE);
@@ -53,7 +54,7 @@
   [mapView setMapType:MKMapTypeHybrid];
   [mapView setZoomEnabled:YES];
   [mapView setScrollEnabled:YES];
-  
+  [self createMapPinPoint];
   magnitudeLabel.text = [NSString stringWithFormat:@"%1.3f",details.magnitude];
   NSLog(@"timeInterval is [%f]", details.timeInterval);
   
@@ -67,7 +68,7 @@
   locationLabel.text = details.place;
   depthLabel.text = [NSString stringWithFormat:@"%f",details.depth];
   
-
+  
 }
 
 -(void)initUI
@@ -76,6 +77,29 @@
 
   
 }
+
+
+-(void)createMapPinPoint
+{
+  
+  CLLocationCoordinate2D coordinate;
+  
+  coordinate.latitude = details.latitude;
+  coordinate.longitude = details.longitude;
+  
+  MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
+  point.coordinate = coordinate;
+  point.title = details.place;
+  
+  
+  MKPinAnnotationView *annView=[[MKPinAnnotationView alloc] initWithAnnotation:point reuseIdentifier:@"currentloc"];
+  annView.pinColor = MKPinAnnotationColorGreen;
+  
+  [mapView addAnnotation:point];
+  
+}
+
+
 /*
 #pragma mark - Navigation
 
