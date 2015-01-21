@@ -118,8 +118,6 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
 
 
 
-
-
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -131,7 +129,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
     dvc.details = details;
     NSLog(@"In prepareForSegue: details: %f %f %f", details.latitude, details.longitude, details.longitude);
     NSLog(@"In prepareForSegue: dvc.details: %f %f %f", dvc.details.latitude, dvc.details.longitude, dvc.details.longitude);
-
+    
   }
 }
 
