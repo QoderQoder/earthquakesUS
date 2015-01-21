@@ -131,11 +131,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
     dvc.details = details;
     NSLog(@"In prepareForSegue: details: %f %f %f", details.latitude, details.longitude, details.longitude);
     NSLog(@"In prepareForSegue: dvc.details: %f %f %f", dvc.details.latitude, dvc.details.longitude, dvc.details.longitude);
-    
-    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
-    //    NSDate *object = self.objects[indexPath.row];
-    //    [[segue destinationViewController] setDetailItem:object];
+
   }
 }
 
@@ -209,6 +205,7 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
           [[NSUserDefaults standardUserDefaults]setObject:savedJSON forKey:@"Earthquakes"];
           [[NSUserDefaults standardUserDefaults]synchronize];
           
+          
         }
         
         [self parseSummaryJSON:JSON];
@@ -238,10 +235,8 @@ static NSString *downloadString = @"http://earthquake.usgs.gov/earthquakes/feed/
     }
     else
     {
-#warning need to add better error handling
       [activityIndicator stopAnimating];
       activityIndicator.hidden =YES;
-      
       NSLog(@"Error detected!");
       NSLog(@"Response is: %@",response);
       isOnline = NO;
